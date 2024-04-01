@@ -2,7 +2,7 @@
 Author: BTZN0325 sunjiahui@boton-tech.com
 Date: 2023-11-29 13:24:24
 LastEditors: BTZN0325 sunjiahui@boton-tech.com
-LastEditTime: 2024-02-02 10:43:37
+LastEditTime: 2024-03-25 10:24:39
 Description: 
 '''
 import xml.etree.ElementTree as ET
@@ -12,29 +12,32 @@ from glob import glob
 
 
 # 按条件修改xml文件里的类别
-# def change_label(xml_file_path, output_dir):
-#     tree = ET.parse(xml_file_path)
-#     root = tree.getroot()
+def change_label(xml_file_path, output_dir):
+    tree = ET.parse(xml_file_path)
+    root = tree.getroot()
 
-#     # 找到并修改<name>字段的内容
-#     for obj in root.iter("object"):
-#         name_element = obj.find("name")
-#         if "embedding" in name_element.text:
-#             name_element.text = "embedding"
+    # 找到并修改<name>字段的内容
+    for obj in root.iter("object"):
+        name_element = obj.find("name")
+        if name_element.text not in ["joint", "brokenlen"]:
+            print(xml_file_path)
+            break
+        # if "embedding" in name_element.text:
+        #     name_element.text = "embedding"
 
-#     # 保存修改后的XML文件
-#     tree.write(output_dir)
+    # 保存修改后的XML文件
+    # tree.write(output_dir)
 
 
-# root = "/data/bt/xray_fanglun/LabeledData/20240229/voc_labels_old"
-# output = "/data/bt/xray_fanglun/LabeledData/20240229/voc_labels"
+root = "/data/bt/xray_gangsi/cls2_xray-gs_v0.1.5/voc_labels"
+output = "/data/bt/xray_fanglun/LabeledData/20240229/voc_labels"
 # os.makedirs(output, exist_ok=True)
-# xml_dirs = glob(os.path.join(root, "*.xml"))
+xml_dirs = glob(os.path.join(root, "*.xml"))
 
-# for xml_dir in xml_dirs:
-#     file_name = os.path.basename(xml_dir)
-#     output_dir = os.path.join(output, file_name)
-#     change_label(xml_dir, output_dir)
+for xml_dir in xml_dirs:
+    file_name = os.path.basename(xml_dir)
+    output_dir = os.path.join(output, file_name)
+    change_label(xml_dir, output_dir)
 
 #===========================================================================
 

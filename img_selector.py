@@ -1,3 +1,10 @@
+'''
+Author: BTZN0325 sunjiahui@boton-tech.com
+Date: 2024-03-21 13:43:33
+LastEditors: BTZN0325 sunjiahui@boton-tech.com
+LastEditTime: 2024-04-01 14:16:05
+Description: 筛选出有目标的图片
+'''
 import fastdeploy as fd
 import cv2
 import os

@@ -1,3 +1,10 @@
+'''
+Author: BTZN0325 sunjiahui@boton-tech.com
+Date: 2024-03-07 10:53:05
+LastEditors: BTZN0325 sunjiahui@boton-tech.com
+LastEditTime: 2024-03-29 14:22:07
+Description: 
+'''
 import os
 import os.path as osp
 
@@ -27,10 +34,10 @@ def merge_dataset(dataset_dirs, dst_dir):
 
 
 dataset_dirs = [
-    "/data/bt/xray_gangsi/cls4_xray-gs-sub_v0.1",
-    "/data/bt/xray_gangsi/LabeledData/liyang/20240321",
-    # "/data/bt/xray_gangsi/LabeledData/20240307",
+    "/data/bt/kjg_multi/raw/new/yongfeng/20240325_yongfeng",
+    "/data/bt/kjg_multi/raw/new/xinyegang/20240327_xinyegang",
+    "/data/bt/kjg_multi/cls2_kjg_v0.1.5",
 ]
-dst_dir = "/data/bt/xray_gangsi/cls4_xray-gs-sub_v0.1.2"
+dst_dir = "/data/bt/kjg_multi/cls2_kjg_v0.1.6"
 merge_dataset(dataset_dirs, dst_dir)
 

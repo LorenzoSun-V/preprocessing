@@ -107,6 +107,7 @@ def select_target(folder_path, cls_name, num=1):
 # split_imgs(folder_path)
 
 # 根据cls_name和数量选择目标图片  
-folder_path = "/data/bt/xray_gangsi/LabeledData/zhoushan/20240315/images"
-cls_name = ["fracture", "brokenlen"]
-select_target(folder_path, cls_name, 2)
+# folder_path = "/data/bt/xray_gangsi/LabeledData/zhoushan/20240315/images"
+# cls_name = ["fracture", "brokenlen"]
+# select_target(folder_path, cls_name, 2)
+
