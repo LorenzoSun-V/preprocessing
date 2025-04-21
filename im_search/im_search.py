@@ -33,12 +33,14 @@ from profiler import Profiler
 
 
 class ImgSearcher:
-    def __init__(self, root_dir, gc_dir=None, hash_size=8, max_ham_distance=6, allowed_extensions=None, delete_img=True, parallel=True):
+    def __init__(self, root_dir, gc_dir=None, hash_size=8, max_ham_distance=6, handle_dup=False, handle_similar=True, allowed_extensions=None, delete_img=True, parallel=True):
         self.root_dir = root_dir
         self.gc_dir = gc_dir if gc_dir else os.path.join(os.path.dirname(root_dir), 'gc_img')
         self.hash_size = hash_size
         self.max_ham_distance = max_ham_distance
         self.delete_img = delete_img
+        if not delete_img and not os.path.exists(self.gc_dir):
+            os.makedirs(self.gc_dir)
         self.parallel = parallel
         self.allowed_extensions = allowed_extensions if allowed_extensions else ['png', 'jpg', 'jpeg', 'JPG', 'PNG', 'JPEG']
 
@@ -55,11 +57,17 @@ class ImgSearcher:
     
     def delete_file(self, file_path):
         if os.path.isfile(file_path):
+            print(f"[INFO] Deleting file: {file_path}")
             os.remove(file_path)
+        else:
+            print(f"[WARNING] File not found for deletion: {file_path}")
     
     def move_file(self, file_path):
         if os.path.isfile(file_path):
+            print(f"[INFO] Moving file: {file_path} to {self.gc_dir}")
             shutil.move(file_path, self.gc_dir)
+        else:
+            print(f"[WARNING] File not found for moving: {file_path}")
 
     def hash_img(self, img_path):
         hash_value = None
@@ -119,7 +127,10 @@ class ImgSearcher:
             if len(img_paths)>1:
                 for idx,img_path in enumerate(img_paths):
                     if idx == 0: continue
-                    self.delete_file(img_path)
+                    if self.delete_img:
+                        self.delete_file(img_path)
+                    else:
+                        self.move_file(img_path)
 
     def handle_similar_imgs(self, hashes):
         with Profiler('build_tree'):
@@ -143,8 +154,10 @@ class ImgSearcher:
         with Profiler('build_hash'):
             hashes = self.build_hash(old_img_paths)
         
-        self.handle_dup_imgs(hashes)
-        self.handle_similar_imgs(hashes)
+        if self. handle_dup:
+            self.handle_dup_imgs(hashes)
+        if self.handle_similar:
+            self.handle_similar_imgs(hashes)
 
         new_img_paths = self.find_files(img_dir)
         print(f" [INFO] dir:{img_dir} [NEW] num: {len(new_img_paths)} ")
@@ -168,6 +181,10 @@ def parse_opt():
     parser.add_argument('--gc_dir', default=None, help='folder path of garbage collection')
     parser.add_argument('--hash_size', type=int, default=8, help='hash size')
     parser.add_argument('--max_ham_distance', type=int, default=6, help='max hamming distance')
+    parser.add_argument('--handle_dup', default=False, type=bool, help='handle duplicated img')
+    parser.add_argument('--handle_similar', default=True, type=bool, help='handle similar img')
+    parser.add_argument('--delete_img', action='store_true', help='delete img')
+    parser.add_argument('--parallel', default=True, type=bool, help='parallel')
     args = parser.parse_args()
     return args
 
@@ -175,9 +192,11 @@ def parse_opt():
 if __name__ == '__main__':
     args = parse_opt()
     searcher = ImgSearcher(root_dir=args.root_dir,
-                            gc_dir=args.gc_dir, 
+                           gc_dir=args.gc_dir, 
                            hash_size=args.hash_size,
                            max_ham_distance=args.max_ham_distance, 
-                           delete_img=True, 
-                           parallel=True)
+                           handle_dup=args.handle_dup,
+                           handle_similar=args.handle_similar,
+                           delete_img=args.delete_img, 
+                           parallel=args.parallel)
     searcher.run()

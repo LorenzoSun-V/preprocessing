@@ -5,36 +5,23 @@ import json
 import shutil
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
+from tqdm import tqdm
+import ultralytics
 
+img_dir = "/data/public/coco_person/images"
+label_dir = "/data/public/coco_person/labels"
+img_dest_dir = "/data/nofar/data_person/v0.1/images" 
+label_dest_dir = "/data/nofar/data_person/v0.1/labels"
 
-root_path = "/data/bt/xray_gangsi/LabeledData/zhoushan"
-save_path = os.path.join(root_path, "target_joint_others")
-json_path = "/data/bt/xray_gangsi/LabeledData/zhoushan/20240315/images"
-jsons = glob(os.path.join(json_path, "*.json"))
-json_dict = {}
-for cur_json in jsons:
-    json_dict[os.path.basename(cur_json).split('.')[0].split('_')[0]] = cur_json
-belts = ["BC2C", "BC9E", "BC10A"]  # , "BC1A", "BC1B", "BC1C"
-n = 0
-for belt in belts:
-    cur_save_dir = os.path.join(save_path, belt)
-    if not os.path.exists(cur_save_dir):
-        os.makedirs(cur_save_dir, exist_ok=True)
-    cur_belt = os.path.join(root_path, belt)
-    for img in os.listdir(cur_belt):
-        if not img.endswith("jpg"):
-            continue
-        img_path = os.path.join(cur_belt, img)
-        img_name = img.split('.')[0]
-        if img_name not in json_dict:
-            continue
-        json_dir = json_dict[img_name]
-        os.system(f"cp {img_path} {cur_save_dir}")
-        os.system(f"cp {json_dir} {cur_save_dir}")
-        n += 1
-print(n)
-        
-
+for folder in ["train2017", "val2017"]:
+    img_folder = os.path.join(img_dir, folder)
+    label_folder = os.path.join(label_dir, folder)
+    for img in tqdm(os.listdir(img_folder)):
+        img_path = os.path.join(img_folder, img)
+        shutil.copy(img_path, img_dest_dir)
+    for label in tqdm(os.listdir(label_folder)):
+        label_path = os.path.join(label_folder, label)
+        shutil.copy(label_path, label_dest_dir)
 
 
 # for belt in os.listdir(root_path):
