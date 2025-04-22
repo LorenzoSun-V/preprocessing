@@ -85,7 +85,7 @@ def create_empty_xml(img_dir, file_name, xml_dir):
 def search_unlabeled_imgs(root_path, gen_flag):
     unlabeled_list = []
     img_path = osp.join(root_path, "images")
-    voc_label_path = osp.join(root_path, "voc_labels")
+    voc_label_path = osp.join(root_path, "Annotations")
     img_dirs = glob(osp.join(img_path, "*.jpg"))
     img_dirs += glob(osp.join(img_path, "*.png"))
     for img_dir in tqdm(sorted(img_dirs)):
