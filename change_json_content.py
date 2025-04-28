@@ -79,10 +79,16 @@ def select_target(folder_path, cls_name, num=1):
 
     num_dict = {}
 
+    ext = ['.jpg', '.png', '.jpeg']
+
     for json_dir in json_dirs:
         for cur_cls in cls_name:
             num_dict[cur_cls] = 0
-        img_dir = json_dir.replace(".json", ".jpg")
+        # img_dir = json_dir.replace(".json", ".jpg")
+        for cur_ext in ext:
+            img_dir = json_dir.replace(".json", cur_ext)
+            if os.path.exists(img_dir):
+                break
         with open(json_dir, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
@@ -107,7 +113,7 @@ def select_target(folder_path, cls_name, num=1):
 # split_imgs(folder_path)
 
 # 根据cls_name和数量选择目标图片  
-# folder_path = "/data/bt/xray_gangsi/LabeledData/zhoushan/20240315/images"
-# cls_name = ["fracture", "brokenlen"]
-# select_target(folder_path, cls_name, 2)
+folder_path = "/data/nofar/person_behavior/hbb_cls10_action_v0.5/images"
+cls_name = ["fire"]
+select_target(folder_path, cls_name, 1)
 
