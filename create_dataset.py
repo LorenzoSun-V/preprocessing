@@ -81,9 +81,9 @@ def merge_dataset(dataset_dirs, dst_dir):
 
 
 dataset_dirs = [
-    "/data/lorenzo/datasets/fire-smoke/fire/cls1_fire_v0.1",
-    "/data/lorenzo/datasets/fire-smoke/fire/cls1_fire_v0.1.2",
+    "/data/nofar/person_behavior/hbb_cls10_action_v0.5",
+    "/data/nofar/person_behavior/labeled_data/20250428",
 ]
-dst_dir = "/data/lorenzo/datasets/fire-smoke/fire/cls1_fire_v0.1.3"
+dst_dir = "/data/nofar/person_behavior/hbb_cls10_action_v0.5.1"
 merge_dataset(dataset_dirs, dst_dir)
 
