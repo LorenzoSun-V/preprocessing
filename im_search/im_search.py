@@ -41,6 +41,8 @@ class ImgSearcher:
         self.delete_img = delete_img
         if not delete_img and not os.path.exists(self.gc_dir):
             os.makedirs(self.gc_dir)
+        self.handle_dup = handle_dup
+        self.handle_similar = handle_similar
         self.parallel = parallel
         self.allowed_extensions = allowed_extensions if allowed_extensions else ['png', 'jpg', 'jpeg', 'JPG', 'PNG', 'JPEG']
 
@@ -154,7 +156,7 @@ class ImgSearcher:
         with Profiler('build_hash'):
             hashes = self.build_hash(old_img_paths)
         
-        if self. handle_dup:
+        if self.handle_dup:
             self.handle_dup_imgs(hashes)
         if self.handle_similar:
             self.handle_similar_imgs(hashes)
