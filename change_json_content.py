@@ -2,6 +2,7 @@ import os
 import json
 from time import time
 from glob import glob
+from tqdm import tqdm
 import shutil
 
 
@@ -54,7 +55,7 @@ def split_imgs(folder_path):
 
     if not os.path.exists(target_dir):
         os.makedirs(target_dir, exist_ok=True)
-    for json_dir in json_dirs:
+    for json_dir in tqdm(json_dirs):
         img_dir = json_dir.replace(".json", ".jpg")
         with open(json_dir, 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -81,7 +82,7 @@ def select_target(folder_path, cls_name, num=1):
 
     ext = ['.jpg', '.png', '.jpeg']
 
-    for json_dir in json_dirs:
+    for json_dir in tqdm(json_dirs):
         for cur_cls in cls_name:
             num_dict[cur_cls] = 0
         # img_dir = json_dir.replace(".json", ".jpg")
@@ -96,7 +97,7 @@ def select_target(folder_path, cls_name, num=1):
             for shape in data['shapes']:
                 if shape['label'] in cls_name:
                     num_dict[shape['label']] += 1
-        print(num_dict)
+        # print(num_dict)
         if any(value >= num for value in num_dict.values()):
             shutil.copy(json_dir, target_dir)
             shutil.copy(img_dir, target_dir)
@@ -113,7 +114,9 @@ def select_target(folder_path, cls_name, num=1):
 # split_imgs(folder_path)
 
 # 根据cls_name和数量选择目标图片  
-folder_path = "/data/nofar/person_behavior/hbb_cls10_action_v0.5/images"
-cls_name = ["fire"]
-select_target(folder_path, cls_name, 1)
+# folder_path = "/data/nofar/person_behavior/hbb_cls10_action_v0.5.2/images"
+# cls_name = ["nomask"]
+# select_target(folder_path, cls_name, 1)
 
+folder_path = "/data/nofar/person_behavior/labeled_data/20250522_2/20250522_211456"
+rename(folder_path)
